@@ -25,6 +25,7 @@ The starter contains infrastructure only, with no product features.
 - The whole API is in `src/server.ts`. It exports the Express `app` (so tests can use it without a network port) and starts listening only when the file is run directly.
 - One endpoint exists: `GET /api/version` → `{ "name": "api", "version": "0.1.0" }`.
 - In development Node.js runs the TypeScript file directly (`node --watch`); `npm run build` compiles it to `dist/`.
+- In production (`npm start` runs `dist/server.js`) Express also serves the built frontend from `apps/web/dist` (`serveFrontend`). Every non-`/api` GET request gets `index.html`. The port comes from `PORT`, then `API_PORT`, then 3001.
 
 ## How the applications communicate
 
@@ -35,7 +36,7 @@ Browser ──► Vite dev server (localhost:5173) ──/api/*──► Express
 - The frontend uses relative URLs such as `fetch('/api/version')`.
 - In development, the Vite proxy (`apps/web/vite.config.ts`) forwards every `/api/*` request to Express. The browser sees a single origin, so no CORS setup is needed.
 - Ports can be changed with the `API_PORT` and `WEB_PORT` environment variables.
-- Production deployment is not configured. If you deploy, decide how `/api` requests reach the API (for example, serve both from the same domain or configure a reverse proxy) and record it below.
+- In production there is no Vite: Express serves the frontend and the API from the same origin, so relative `/api` URLs keep working and still no CORS is needed. The whole application deploys as one Node.js web service (build: `npm run build`, start: `npm start`).
 
 ## Decisions intentionally left open
 
@@ -48,7 +49,7 @@ These are yours to decide based on your requirements. Choose the simplest option
 - **State management** — React state and props first; add more only if needed.
 - **Validation** — hand-written checks or a validation library.
 - **Authentication** — only if your requirements really need it.
-- **Deployment** — where and how the application runs outside your computer.
+- **Deployment** — whether and where the application runs outside your computer (one Node.js web service is enough).
 
 ## How to document a decision
 

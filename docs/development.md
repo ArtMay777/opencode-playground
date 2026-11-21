@@ -73,6 +73,15 @@ Both reload automatically when you save a file. Stop them with `Ctrl+C`.
 
 Run only one app: `npm run dev -w apps/api` or `npm run dev -w apps/web`.
 
+## Run the production build
+
+```bash
+npm run build
+npm start
+```
+
+`npm start` runs the compiled API (`apps/api/dist/server.js`), which also serves the built frontend from `apps/web/dist`. Open http://localhost:3001: the whole app runs on one port, the same way it runs on a hosting platform. Set the port with `PORT` (hosting platforms do this for you) or `API_PORT`.
+
 ## How the frontend talks to the backend
 
 1. The React code calls `fetch('/api/version')` with a relative URL.
@@ -82,6 +91,8 @@ Run only one app: `npm run dev -w apps/api` or `npm run dev -w apps/web`.
 
 Because the browser only talks to one origin, you do not need CORS. **Rule:** every backend route must start with `/api`.
 
+In production there is no Vite: Express serves the frontend itself, so the same relative URLs reach the API directly.
+
 ## All scripts
 
 Run from the repository root.
@@ -90,6 +101,7 @@ Run from the repository root.
 | --- | --- |
 | `npm run dev` | Start backend and frontend in development mode |
 | `npm run build` | Type check and build both apps (`apps/*/dist`) |
+| `npm start` | Run the production build: API + built frontend on one port |
 | `npm run lint` | Run ESLint in both apps |
 | `npm run typecheck` | Run TypeScript checks in both apps and `e2e/` |
 | `npm run test` | Run Vitest unit tests in both apps |
@@ -190,3 +202,19 @@ Errors such as `EADDRINUSE: address already in use :::3001` or `Port 5173 is alr
 
 - `npm run typecheck` and `npm run lint` print the file and line. Fix the first error first; later ones are often caused by it.
 - Backend import errors (`Cannot find module './routes'`): relative imports in `apps/api` need the `.ts` extension, e.g. `./routes.ts`.
+
+### OpenCode cannot use a model
+
+- Run `/connect` and check that a provider is connected, then pick a model with `/models`.
+- `Model unavailable` or a payment request: the free model was removed, is not available in your region, or is no longer free. Pick another one.
+- Check `opencode --version` and your internet connection.
+- Logs: `~/.local/share/opencode/log/opencode.log`.
+
+### A free model hit its limit
+
+- Wait (limits are often daily) or switch to another free model with `/models`.
+- Save requests: start a new session (`/new`) for each task, write specific prompts, attach only the files that matter (`@file`).
+
+### The agent wrote broken or incomplete code
+
+This is normal. Run the checks, give the agent the **exact** error, make the step smaller, undo with `/undo` or `git restore .`, start a fresh session with `/new`, or try another model. More tips: [docs/guide/05-build-the-mvp.md](guide/05-build-the-mvp.md#53-when-the-agent-gets-stuck).
