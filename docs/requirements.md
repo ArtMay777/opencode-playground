@@ -2,7 +2,7 @@
 
 > **Status:** not written yet. Replace this guidance with the requirements of your own application.
 
-This file describes **what** your application must do. AI agents read it before planning or implementing anything (it is loaded automatically through `opencode.jsonc`), so clear requirements lead to better code. You can write it in Ukrainian or English.
+This file describes **what** your application must do. AI agents read it before planning or implementing anything (it is loaded automatically through `opencode.jsonc`), so clear requirements lead to better code. Write it in English.
 
 Keep **how** it is built (technical decisions) in `docs/architecture.md`.
 

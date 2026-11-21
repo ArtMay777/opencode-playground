@@ -15,7 +15,7 @@ docs/       requirements.md (what to build), architecture.md (decisions), develo
 ```
 
 - npm workspaces, one `package.json` at the root. Run commands from the root.
-- The browser calls the API with relative `/api/...` URLs. Vite (port 5173) proxies them to Express (port 3001).
+- The browser calls the API with relative `/api/...` URLs. In development Vite (port 5173) proxies them to Express (port 3001). In production (`npm run build && npm start`) Express serves the built frontend and the API on one port.
 
 ## Before implementing a feature
 
@@ -28,10 +28,12 @@ docs/       requirements.md (what to build), architecture.md (decisions), develo
 
 - TypeScript strict mode everywhere. Avoid `any`; type API request and response shapes.
 - Prefer simple, readable code over abstractions. Do not add files, layers or features "for later".
-- Do not add dependencies unless clearly needed. Never add a UI component library, state management library, database, ORM, authentication or Docker without an explicit requirement. Explain every new dependency.
+- Do not add dependencies unless clearly needed. Explain every new dependency and why it is needed.
+- Use the data storage, hosting and other technical decisions recorded in `docs/architecture.md`. If a decision the task needs is missing, propose options and ask instead of choosing silently.
+- Secrets (database URLs, API keys) come from environment variables. Never hard-code them, never commit `.env`, and keep `.env.example` up to date with variable names and fake values.
 - Frontend: function components and hooks, Tailwind utility classes, handle loading/error/empty states, accessible semantic HTML.
 - Backend: all routes under `/api`, validate input, return JSON errors with correct status codes. Node.js runs the `.ts` files directly, so relative imports use the `.ts` extension and only erasable TypeScript syntax is allowed (no `enum`, `namespace` or parameter properties).
-- Keep `export const app` and the `import.meta.main` check in `apps/api/src/server.ts` so tests can import the app without starting a server.
+- Keep `export const app`, `serveFrontend` and the `import.meta.main` check in `apps/api/src/server.ts` so tests can import the app without starting a server and production can serve the frontend.
 - Put tests next to the code: `*.test.ts(x)`. E2E tests go in `e2e/*.spec.ts`.
 
 ## Testing expectations
