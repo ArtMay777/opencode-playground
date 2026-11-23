@@ -119,7 +119,7 @@ Recommend one option and explain why. Do not change any files.
 
 **Expected agent behavior:** it reads the requirements and the feature file, compares the options against your entities and stories, recommends one, lists consequences (new dependency, `.env`, migrations or schema), and names the decisions the feature depends on — without suggesting to build the feature now. It does not edit files — the plan agent cannot.
 
-Then switch back to **build** and record the decision:
+Then switch to **analyst** (it can edit only documentation) and record the decisions:
 
 ```text
 Add decision log entries to docs/architecture.md: storage = [your choice], hosting = [your choice or "not decided"],

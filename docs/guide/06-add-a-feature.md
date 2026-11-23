@@ -15,7 +15,7 @@ Take the feature you planned in Step 2 (`docs/features/<feature-name>.md`), or p
 
 ## 6.2 Docs first
 
-Update the requirements **before** any code. In OpenCode (**build**):
+Update the requirements **before** any code. In OpenCode, switch to the **analyst**:
 
 ```text
 I want to add the feature described in docs/features/<feature-name>.md.

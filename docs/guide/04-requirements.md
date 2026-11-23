@@ -8,7 +8,7 @@ Every agent reads `docs/requirements.md` before every task. Vague requirements =
 
 ## 4.1 Complete the requirements with the agent
 
-In OpenCode (**build** agent):
+In OpenCode, switch to the **analyst** agent (`Shift+Tab` or `/agents`). It can edit only `docs/` and `data/`, so it physically cannot start writing code:
 
 ```text
 Help me complete docs/requirements.md. Sections 1–4 already contain my brief.
@@ -23,7 +23,7 @@ Remove the guidance comments from the sections you fill in. Do not write any cod
 **Expected agent behavior:**
 
 1. It reads the file and asks questions — it does **not** start writing immediately. If it skips the questions, stop it and repeat "ask first".
-2. After your answers it edits only `docs/requirements.md`.
+2. After your answers it edits only `docs/requirements.md` (and `docs/glossary.md` if new terms appear).
 3. Every user story gets 2–4 acceptance criteria, including at least one error or empty case ("Given the title is empty, when I save, then I see an error").
 
 ## 4.2 Review the requirements critically
@@ -36,7 +36,7 @@ Which acceptance criteria are vague or impossible to test? What is missing for t
 What is too big for an MVP and should move to "Out of scope"? Only list problems, do not change files.
 ```
 
-**Expected agent behavior:** a list of concrete problems. Fix the ones you agree with — yourself or with the build agent. You decide, not the agent.
+**Expected agent behavior:** a list of concrete problems. Fix the ones you agree with — yourself or with the analyst. You decide, not the agent.
 
 ## 4.3 Check it yourself
 
