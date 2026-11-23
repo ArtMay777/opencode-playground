@@ -100,4 +100,4 @@ If your course keeps a shared list of ideas, add yours there, so everyone builds
 - [ ] `data/seed.json` contains realistic sample data, including tricky cases.
 - [ ] The brief is committed.
 
-Next: [Step 3. Data, architecture and hosting](03-data-and-hosting.md)
+Next: [Step 3. Data, architecture and hosting](03-data-and-hosting.md) — from there on you work in OpenCode.

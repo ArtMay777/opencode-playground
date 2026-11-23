@@ -2,7 +2,7 @@
 
 **Goal:** turn your brief into requirements that are specific enough to build and test.
 
-> **From this step on, work in OpenCode**, started from the repository root. The agent must read and edit your files, so an outside AI chat is no longer enough.
+> Keep working in OpenCode, started from the repository root.
 
 Every agent reads `docs/requirements.md` before every task. Vague requirements = vague code. This is the most valuable 30 minutes of the project.
 
