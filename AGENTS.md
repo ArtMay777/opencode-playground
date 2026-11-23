@@ -10,7 +10,8 @@ A full-stack TypeScript starter. It contains working infrastructure but no produ
 apps/web/   React 19 + Vite + Tailwind CSS 4 frontend (Vitest + React Testing Library)
 apps/api/   Express 5 API on Node.js, a single file: src/server.ts (Vitest + Supertest)
 e2e/        Playwright end-to-end tests (playwright.config.ts at the root)
-docs/       requirements.md (what to build), architecture.md (decisions), development.md (how to run),
+docs/       requirements.md (what to build), architecture.md (decisions), glossary.md (domain terms),
+            development.md (how to run),
             features/ (planned features: do not implement unless asked)
 .opencode/  OpenCode subagents (frontend, backend, reviewer) and commands (/plan-feature, /implement, /verify)
 ```
@@ -27,6 +28,7 @@ docs/       requirements.md (what to build), architecture.md (decisions), develo
 
 ## Conventions
 
+- Use the terms from `docs/glossary.md` exactly — in code, UI texts and tests. Do not mix up terms the glossary marks as different. If a needed term is missing, ask instead of inventing one.
 - TypeScript strict mode everywhere. Avoid `any`; type API request and response shapes.
 - Prefer simple, readable code over abstractions. Do not add files, layers or features "for later".
 - Do not add dependencies unless clearly needed. Explain every new dependency and why it is needed.

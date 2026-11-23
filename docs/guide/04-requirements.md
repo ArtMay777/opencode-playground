@@ -16,6 +16,7 @@ First ask me 5–7 clarifying questions about the behavior and the data, and wai
 Then fill in section 5 (acceptance criteria in Given/When/Then form for every user story),
 section 6 (entities and fields with types and validation rules, based on data/seed.json)
 and section 7 (open questions).
+Use the terms from docs/glossary.md; if a new term appears, add it there too.
 Remove the guidance comments from the sections you fill in. Do not write any code.
 ```
 
