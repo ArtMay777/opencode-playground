@@ -42,14 +42,13 @@ Browser ──► Vite dev server (localhost:5173) ──/api/*──► Express
 
 These are yours to decide based on your requirements. Choose the simplest option that works, and record the choice below.
 
-- **Data storage** — in memory, a JSON file, browser `localStorage`, or a database.
 - **API design** — resources, URLs, request/response shapes, error format.
 - **Backend structure** — when and how to split `server.ts` (routers, modules, validation).
 - **Frontend structure** — pages, component folders, routing (whether you need a router at all).
 - **State management** — React state and props first; add more only if needed.
 - **Validation** — hand-written checks or a validation library.
 - **Authentication** — only if your requirements really need it.
-- **Deployment** — whether and where the application runs outside your computer (one Node.js web service is enough).
+- **Deployment vendor** — not chosen; the host must provide a persistent disk/volume for `data/store.json` (see decision log).
 
 ## How to document a decision
 
@@ -74,4 +73,37 @@ Also keep the "API endpoints" section up to date.
 
 ## Decision log
 
-<!-- Add your decisions here, newest first. -->
+### 2026-11-25 — Writable JSON store owned by the API
+
+- **Context:** Catch records must survive server restarts so an angler can add, edit and delete them over a short deployment. The MVP has no accounts and the production app is one Node.js service.
+- **Decision:** The API owns a writable JSON store at `data/store.json`. The frontend reads and changes catch records only through the API. For the MVP the store holds a `catchRecords` collection.
+- **Alternatives:** An in-memory array (loses every edit on restart), SQLite or a hosted database (migrations and setup not justified for one small collection), browser `localStorage` (no shared API data and unreliable statistics).
+- **Consequences:** No database dependency; writes must be atomic and serialized inside the single process; the directory containing the store must live on persistent storage. Adding a field to a record does not require a schema migration.
+
+### 2026-11-25 — Seed data initializes the store once
+
+- **Context:** `data/seed.json` supplies sample catch records for a fresh install, but edits made after startup must not be silently discarded.
+- **Decision:** On startup, when `data/store.json` does not exist, the API reads `data/seed.json` and initializes the store from it once. When the store exists, it is used as-is. `data/seed.json` is immutable and is never written to by the application.
+- **Alternatives:** Re-seeding on every boot (erases stored edits), importing the seed at compile time (the API build has `rootDir: "src"`, so a file outside `src` cannot be imported into `dist`).
+- **Consequences:** A fresh deployment starts with sample records; removing `data/store.json` resets the journal to the seed; the seed file remains a stable fixture for tests.
+
+### 2026-11-25 — Stable persisted IDs for catch records
+
+- **Context:** Editing and deleting must target one catch record, and the records in `data/seed.json` have no IDs.
+- **Decision:** The API creates an ID for every catch record — both records initialized from seed data and records added later — and persists it in `data/store.json`. An assigned ID never changes, including after an edit. The ID format is not fixed by this decision.
+- **Alternatives:** Using array positions (break after deletion or reordering), deriving an ID from field values (break when those fields are edited).
+- **Consequences:** A client can address a single record for edit and delete; IDs remain valid across restarts; every stored record carries its ID.
+
+### 2026-11-25 — Persistent volume required, hosting vendor undecided
+
+- **Context:** `data/store.json` must survive restarts and redeploys. The starter already runs as one Node.js web service that serves the built frontend and the API on one port.
+- **Decision:** No hosting vendor or region is selected now. Any chosen platform must provide a persistent disk/volume for the directory containing `data/store.json` and run the application with `npm run build` followed by `npm start`.
+- **Alternatives:** Ephemeral free-tier hosts (the store would be wiped on restart), serverless platforms (require restructuring the long-running Express service and moving storage off disk).
+- **Consequences:** Platform choice is narrowed but left open; deployment must include `data/` so seed initialization can work; the same setup runs locally and on the chosen host.
+
+### 2026-11-25 — Fishing trips remain future work
+
+- **Context:** `docs/features/fishing-trips-and-spots.md` plans a Fishing Trip entity and catch records assigned to trips, but the feature is explicitly out of MVP scope.
+- **Decision:** The store design allows a later `fishingTrips` collection and an optional `tripId` on a catch record. Fishing trips, fishing spots, and trip assignment are not implemented in the MVP.
+- **Alternatives:** Building the relationship now (adds unrequested work to the MVP), using a fixed record shape that cannot accept new fields (would require rewriting stored data later).
+- **Consequences:** Adding the collection and optional field later does not invalidate existing catch records; current catch records are unassigned to any trip; API and UI work for trips stays a separate task.
