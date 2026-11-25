@@ -1,0 +1,84 @@
+{
+  "catchRecords": [
+    {
+      "anglerName": "Oleksii",
+      "caughtAt": "2026-04-12",
+      "fishCategory": "predatory",
+      "fishSpecies": "pike",
+      "fishCount": 2,
+      "totalWeightKg": 3.4
+    },
+    {
+      "anglerName": "Andrii",
+      "caughtAt": "2026-04-19",
+      "fishCategory": "non-predatory",
+      "fishSpecies": "carp",
+      "fishCount": 3,
+      "totalWeightKg": 5.8
+    },
+    {
+      "anglerName": "Oleksii",
+      "caughtAt": "2026-05-03",
+      "fishCategory": "predatory",
+      "fishSpecies": "perch",
+      "fishCount": 7,
+      "totalWeightKg": 1.6
+    },
+    {
+      "anglerName": "Maksym",
+      "caughtAt": "2026-05-10",
+      "fishCategory": "non-predatory",
+      "fishSpecies": "crucian carp",
+      "fishCount": 12,
+      "totalWeightKg": 4.2
+    },
+    {
+      "anglerName": "Andrii",
+      "caughtAt": "2026-05-17",
+      "fishCategory": "predatory",
+      "fishSpecies": "zander",
+      "fishCount": 1,
+      "totalWeightKg": 2.1
+    },
+    {
+      "anglerName": "Ihor",
+      "caughtAt": "2026-05-24",
+      "fishCategory": "non-predatory",
+      "fishSpecies": "bream",
+      "fishCount": 6,
+      "totalWeightKg": 3.7
+    },
+    {
+      "anglerName": "Oleksii",
+      "caughtAt": "2026-06-01",
+      "fishCategory": "predatory",
+      "fishSpecies": "pike",
+      "fishCount": 1,
+      "totalWeightKg": 4.9
+    },
+    {
+      "anglerName": "Maksym",
+      "caughtAt": "2026-06-08",
+      "fishCategory": "non-predatory",
+      "fishSpecies": "silver carp",
+      "fishCount": 2,
+      "totalWeightKg": 8.6
+    },
+    {
+      "anglerName": "Ihor",
+      "caughtAt": "2026-06-15",
+      "fishCategory": "predatory",
+      "fishSpecies": "perch",
+      "fishCount": 9,
+      "totalWeightKg": 2.3
+    },
+    {
+      "anglerName": "Andrii",
+      "caughtAt": "2026-06-22",
+      "fishCategory": "non-predatory",
+      "fishSpecies": "carp",
+      "fishCount": 1,
+      "totalWeightKg": 6.4
+    }
+  ]
+}
