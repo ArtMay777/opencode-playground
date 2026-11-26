@@ -221,7 +221,7 @@ Not built: implementing a story *is* implementing a feature. But `my-library.md`
 
 ### Bonus at the end of Day 2
 
-1. **Pull request on GitHub + review by Copilot.** It found some of the same problems as our `reviewer` and a couple of new ones. Good practice: review the agent's work with a **different model or a different harness** — they have different blind spots.
+1. **Pull request on GitHub + review by Copilot.** It found some of the same problems as our `reviewer` and a couple of new ones. Good practice: review the agent's work with a **different model or a different harness** — they have different blind spots. The topic comes up by itself during story generation: subagents start, questions about "could it be another model?" follow — Copilot on the PR is simply a good illustration, no extra step in the guide needed.
 2. **Design by Claude Code.** The project had no visual brief, so the UI was basic (the deliberate gap). From a couple of prompts based on the requirements, Claude Code produced a decent design and a prototype — take it and apply it to the app. The gap a weak model leaves is exactly where a stronger tool pays off.
 
 ## 6. Fallback
