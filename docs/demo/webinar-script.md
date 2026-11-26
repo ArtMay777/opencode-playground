@@ -219,6 +219,11 @@ Say it plainly: free models are enough to learn the process. For serious work �
 
 Not built: implementing a story *is* implementing a feature. But `my-library.md`, planned in Step 2, made us choose users with a *set* of roles — planned, not built, and it still shaped the architecture.
 
+### Bonus at the end of Day 2
+
+1. **Pull request on GitHub + review by Copilot.** It found some of the same problems as our `reviewer` and a couple of new ones. Good practice: review the agent's work with a **different model or a different harness** — they have different blind spots.
+2. **Design by Claude Code.** The project had no visual brief, so the UI was basic (the deliberate gap). From a couple of prompts based on the requirements, Claude Code produced a decent design and a prototype — take it and apply it to the app. The gap a weak model leaves is exactly where a stronger tool pays off.
+
 ## 6. Fallback
 
 No tags. One prepared branch per day with the result done at home. If the model hits a limit or gets stuck live: switch to it, show the result, explain what the model would have done. Keep a second free model ready (in rehearsal: DeepSeek V4.1 Flash Free ran out, **Big Pickle** finished the work) — but the limit may be shared between free models.
@@ -255,6 +260,8 @@ No tags. One prepared branch per day with the result done at home. If the model 
 - Tests and documentation are part of the code: they are maintained like code, or they rot like code.
 - The first story is the riskiest (schema, migrations, seed, setup). Do it with patience — the next ones go much smoother.
 - Teaching note: show the *why* on a real failure before explaining the paradigm — explanations without experience do not stick.
+- Review with a different model or harness (for example Copilot on the pull request): it finds part of the same problems and new ones — different blind spots.
+- Use the right tool for the job: a free model builds the working flow; a stronger tool can produce a decent design and prototype from the requirements in a couple of prompts.
 
 ## 9. Next time
 
@@ -263,3 +270,4 @@ No tags. One prepared branch per day with the result done at home. If the model 
 - Budget 90 minutes plus ~15 for questions, or collect questions in advance.
 - Keep two free models ready and do not burn the limit right before going live.
 - Show the value of tests and docs on a concrete failure, not in a lecture.
+- Keep the bonus: PR review by another model and a design prototype from a stronger tool — both landed well.
