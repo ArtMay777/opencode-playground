@@ -101,22 +101,22 @@ Amateur anglers who want to record and review their fishing catches.
 
 The MVP stores one entity: Catch record. The 10 examples in `data/seed.json` use these fields, except for Catch record ID, which the API assigns when it initializes the store from the seed data.
 
-| Field           | Type                                   | Required | Validation rules                                                                                                                                                                                         |
-| --------------- | -------------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Catch record ID | string                                 | Yes      | Assigned by the API when a catch record is created, including for records initialized from seed data; stable for the lifetime of the catch record and unchanged by edits.                                |
-| Caught at       | string in `YYYY-MM-DD` format          | Yes      | A real calendar date, never in the future.                                                                                                                                                               |
-| Angler          | string                                 | Yes      | 1–100 characters; must contain at least one non-space character.                                                                                                                                         |
-| Fish category   | string: `predatory` or `non-predatory` | Yes      | Must be one of these two values.                                                                                                                                                                         |
-| Fish species    | string                                 | Yes      | 1–100 characters; must contain at least one non-space character; must belong to the selected Fish category: `predatory` — pike, perch, zander; `non-predatory` — crucian carp, carp, bream, silver carp. |
-| Fish count      | integer                                | Yes      | Greater than or equal to 1.                                                                                                                                                                              |
-| Total weight    | number, kilograms                      | Yes      | Greater than 0 with at most two decimal places.                                                                                                                                                          |
+| Field | Type | Required | Validation rules |
+| --- | --- | --- | --- |
+| Catch record ID | string | Yes | Assigned by the API when a catch record is created, including for records initialized from seed data; stable for the lifetime of the catch record and unchanged by edits. |
+| Caught at | string in `YYYY-MM-DD` format | Yes | A real calendar date, never in the future. |
+| Angler | string | Yes | 1–100 characters; must contain at least one non-space character. |
+| Fish category | string: `predatory` or `non-predatory` | Yes | Must be one of these two values. |
+| Fish species | string | Yes | 1–100 characters; must contain at least one non-space character; must belong to the selected Fish category: `predatory` — pike, perch, zander; `non-predatory` — crucian carp, carp, bream, silver carp. |
+| Fish count | integer | Yes | Greater than or equal to 1. |
+| Total weight | number, kilograms | Yes | Greater than 0 with at most two decimal places. |
 
 ### Catch statistics (derived, not stored)
 
-| Value            | Type              | Derivation                                                                                                                                                                                                                                 |
-| ---------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Total fish count | integer           | Sum of Fish count over the catch records in view; 0 when there are none.                                                                                                                                                                   |
-| Total weight     | number, kilograms | Sum of Total weight over the catch records in view, rounded to one decimal place using half-up rounding; shown as a number with one decimal place and “ kg” (for example 43.0 kg). If there are no catch records in view, shown as 0.0 kg. |
+| Value | Type | Derivation |
+| --- | --- | --- |
+| Total fish count | integer | Sum of Fish count over the catch records in view; 0 when there are none. |
+| Total weight | number, kilograms | Sum of Total weight over the catch records in view, rounded to one decimal place using half-up rounding; shown as a number with one decimal place and “ kg” (for example 43.0 kg). If there are no catch records in view, shown as 0.0 kg. |
 
 The catch records in view are all catch records when no Fish category filter is active, and only catch records with the selected Fish category otherwise.
 
