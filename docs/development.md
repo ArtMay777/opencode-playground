@@ -136,7 +136,9 @@ npm run test:e2e:install   # once: downloads Chromium
 npm run test:e2e
 ```
 
-- `playwright.config.ts` starts the API and the frontend automatically and stops them afterwards. If `npm run dev` is already running, Playwright reuses those servers.
+- `playwright.config.ts` starts the API and the frontend automatically and stops them afterwards. Playwright never reuses already-running local servers.
+- Playwright uses its own ports: `3101` for the API and `5174` for the frontend. Normal `npm run dev` still uses the normal development ports (`3001` for the API and `5173` for the frontend).
+- E2E uses its isolated temporary `DATA_DIR` (`test-results/angler-journal-e2e-data`) and never the real `data/store.json`.
 - On Linux you may also need system libraries: `npx playwright install --with-deps chromium`.
 - After a run, open the HTML report with `npx playwright show-report`. Failed tests keep a trace (`test-results/`) that you can open in the report.
 - Debug interactively: `npx playwright test --ui` or `npx playwright test --headed`.
@@ -195,8 +197,8 @@ Errors such as `EADDRINUSE: address already in use :::3001` or `Port 5173 is alr
 ### Playwright fails
 
 - `Executable doesn't exist` → run `npm run test:e2e:install`.
-- `Timed out waiting ... from config.webServer` → a server did not start. Run `npm run dev` and read the errors, and check that no other project is using ports 3001/5173.
-- Tests run against the wrong application → another project's server is running on the same port and Playwright reused it. Stop it, or use different ports (see above).
+- `Timed out waiting ... from config.webServer` → a server did not start. Check the ports listed in the E2E section and make sure no other project is using them.
+- Tests run against the wrong application → another project is using a port from the E2E section. Stop it and rerun the tests.
 
 ### Type or lint errors
 

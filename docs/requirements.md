@@ -4,7 +4,7 @@
 
 This file describes **what** your application must do. AI agents read it before planning or implementing anything (it is loaded automatically through `opencode.jsonc`), so clear requirements lead to better code. Write it in English.
 
-Keep **how** it is built (technical decisions) in `docs/architecture.md`.
+Keep **how** it is built (technical decisions) in `docs/architecture/` (see `docs/architecture/README.md` and `docs/architecture/decisions.md`).
 
 ## How to write good requirements
 
