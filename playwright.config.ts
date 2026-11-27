@@ -9,11 +9,12 @@ const isCI = Boolean(process.env.CI);
 // or the real data/store.json.
 const apiPort = 3101;
 const webPort = 5174;
-const e2eDataDir = 'test-results/angler-journal-e2e-data';
+const repoRoot = path.resolve(fileURLToPath(new URL('./', import.meta.url)));
+const e2eDataDir = path.join(repoRoot, 'test-results', 'angler-journal-e2e-data');
 
 // Playwright starts web servers before globalSetup, so clear the directory here
 // as well: the API must see a fresh store before it starts.
-rmSync(path.resolve(fileURLToPath(new URL('./', import.meta.url)), e2eDataDir), {
+rmSync(e2eDataDir, {
   recursive: true,
   force: true,
 });

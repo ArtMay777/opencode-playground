@@ -7,8 +7,14 @@ import express, {
   type Request,
   type Response,
 } from "express";
-import { getCatchRecords } from "./routes/catchRecords.ts";
+import {
+  createCatchRecord,
+  deleteCatchRecord,
+  getCatchRecords,
+  updateCatchRecord,
+} from "./routes/catchRecords.ts";
 import { StoreError } from "./store.ts";
+import { ValidationError } from "./validation/catchRecords.ts";
 
 interface PackageInfo {
   name: string;
@@ -41,6 +47,20 @@ app.use(
     next: NextFunction,
   ) => {
     if (isJsonSyntaxError(error)) {
+      const rawBody = (error as BodyError).body;
+      if (typeof rawBody === "string") {
+        try {
+          const parsed: unknown = JSON.parse(rawBody);
+          if (parsed === null || Array.isArray(parsed) || typeof parsed !== "object") {
+            response
+              .status(400)
+              .json({ field: "body", message: "Invalid request body" });
+            return;
+          }
+        } catch {
+          // malformed JSON - fall through
+        }
+      }
       response.status(400).json({ field: "body", message: "Invalid JSON" });
       return;
     }
@@ -53,6 +73,9 @@ app.get("/api/version", (_request, response) => {
 });
 
 app.get("/api/catch-records", getCatchRecords);
+app.post("/api/catch-records", createCatchRecord);
+app.put("/api/catch-records/:id", updateCatchRecord);
+app.delete("/api/catch-records/:id", deleteCatchRecord);
 
 app.use((_request, response) => {
   response.status(404).json({ message: "Not found" });
@@ -66,6 +89,10 @@ app.use(
     next: NextFunction,
   ) => {
     void next;
+    if (error instanceof ValidationError) {
+      response.status(error.status).json(error.body);
+      return;
+    }
     if (error instanceof StoreError) {
       response.status(error.status).json(error.body);
       return;
