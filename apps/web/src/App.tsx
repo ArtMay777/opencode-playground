@@ -26,6 +26,20 @@ const FORM_FISH_CATEGORY_OPTIONS: Array<{ value: FishCategory; label: string }> 
   { value: 'non-predatory', label: 'Non-predatory' },
 ];
 
+const FISH_SPECIES_OPTIONS: Record<FishCategory, Array<{ value: string; label: string }>> = {
+  predatory: [
+    { value: 'pike', label: 'Pike' },
+    { value: 'perch', label: 'Perch' },
+    { value: 'zander', label: 'Zander' },
+  ],
+  'non-predatory': [
+    { value: 'crucian carp', label: 'Crucian carp' },
+    { value: 'carp', label: 'Carp' },
+    { value: 'bream', label: 'Bream' },
+    { value: 'silver carp', label: 'Silver carp' },
+  ],
+};
+
 interface CatchRecordFormValues {
   caughtAt: string;
   anglerName: string;
@@ -135,11 +149,22 @@ export default function App() {
   }, []);
 
   const handleFieldChange = (field: keyof CatchRecordFormValues, value: string) => {
-    setFormValues((current) => ({ ...current, [field]: value }));
+    setFormValues((current) => {
+      if (field === 'fishCategory') {
+        return {
+          ...current,
+          fishCategory: value as FishCategory,
+          fishSpecies: '',
+        };
+      }
+      return { ...current, [field]: value };
+    });
     setFormErrors((current) => {
-      if (!(field in current)) return current;
       const next = { ...current };
       delete next[field as keyof FormErrors];
+      if (field === 'fishCategory') {
+        delete next.fishSpecies;
+      }
       return next;
     });
   };
@@ -220,7 +245,7 @@ export default function App() {
           <form className="mt-4 grid gap-4 sm:grid-cols-2" noValidate onSubmit={handleSubmit}>
             <div>
               <label className="block text-sm font-medium text-slate-700" htmlFor="caughtAt">
-                Caught at
+                Date
               </label>
               <input
                 id="caughtAt"
@@ -287,15 +312,21 @@ export default function App() {
               <label className="block text-sm font-medium text-slate-700" htmlFor="fishSpecies">
                 Fish species
               </label>
-              <input
+              <select
                 id="fishSpecies"
                 name="fishSpecies"
-                type="text"
                 className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
                 value={formValues.fishSpecies}
                 onChange={(event) => handleFieldChange('fishSpecies', event.target.value)}
                 aria-describedby={formErrors.fishSpecies ? 'fishSpecies-error' : undefined}
-              />
+              >
+                <option value="">Select fish species</option>
+                {FISH_SPECIES_OPTIONS[formValues.fishCategory].map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
               {formErrors.fishSpecies && (
                 <p id="fishSpecies-error" className="mt-1 text-sm text-red-700">
                   {formErrors.fishSpecies}
@@ -439,7 +470,7 @@ export default function App() {
               <table className="min-w-full border-collapse text-left text-sm">
                 <thead>
                   <tr className="border-b border-slate-200">
-                    <th className="px-2 py-2 font-semibold">Caught at</th>
+                    <th className="px-2 py-2 font-semibold">Date</th>
                     <th className="px-2 py-2 font-semibold">Angler</th>
                     <th className="px-2 py-2 font-semibold">Fish category</th>
                     <th className="px-2 py-2 font-semibold">Fish species</th>

@@ -32,10 +32,10 @@ test('angler journal MVP flow: seed list, filter, add, edit, delete', async ({ p
   await expect(page.getByText('43.0 kg', { exact: true })).toBeVisible();
 
   // 3) Add a valid catch record and verify it appears.
-  await page.getByLabel('Caught at').fill('2026-06-23');
+  await page.getByLabel('Date').fill('2026-06-23');
   await page.getByLabel('Angler', { exact: true }).fill('Oleksii');
   await page.getByLabel('Fish category', { exact: true }).selectOption('predatory');
-  await page.getByLabel('Fish species', { exact: true }).fill('pike');
+  await page.getByLabel('Fish species', { exact: true }).selectOption('pike');
   await page.getByLabel('Fish count', { exact: true }).fill('2');
   await page.getByLabel('Total weight', { exact: true }).fill('3.4');
   await page.getByRole('button', { name: 'Add catch record' }).click();

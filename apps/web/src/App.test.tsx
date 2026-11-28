@@ -115,7 +115,7 @@ function mockFetchByRoute(
 }
 
 function fillForm(values: Partial<Record<string, string>>) {
-  if (values.caughtAt !== undefined) fireEvent.change(screen.getByLabelText('Caught at'), { target: { value: values.caughtAt } });
+  if (values.caughtAt !== undefined) fireEvent.change(screen.getByLabelText('Date'), { target: { value: values.caughtAt } });
   if (values.anglerName !== undefined) fireEvent.change(screen.getByLabelText('Angler'), { target: { value: values.anglerName } });
   if (values.fishCategory !== undefined) fireEvent.change(screen.getByLabelText('Fish category'), { target: { value: values.fishCategory } });
   if (values.fishSpecies !== undefined) fireEvent.change(screen.getByLabelText('Fish species'), { target: { value: values.fishSpecies } });
@@ -136,7 +136,7 @@ describe('App - catch records UI', () => {
     expect(screen.getByText('Total fish count')).toBeInTheDocument();
     expect(screen.getByText('44')).toBeInTheDocument();
     expect(screen.getAllByText('Total weight').length).toBeGreaterThan(0);
-    expect(screen.getByRole('columnheader', { name: 'Caught at' })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: 'Date' })).toBeInTheDocument();
     expect(screen.getByRole('columnheader', { name: 'Angler' })).toBeInTheDocument();
     expect(screen.getByRole('columnheader', { name: 'Fish category' })).toBeInTheDocument();
     expect(screen.getByRole('columnheader', { name: 'Fish species' })).toBeInTheDocument();
@@ -201,6 +201,33 @@ describe('App - catch records UI', () => {
     expect(screen.getByText('28.7 kg')).toBeInTheDocument();
   });
 
+  it('uses category-specific Fish species options and resets species on category change', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(mockJsonResponse(seedRecords)));
+
+    render(<App />);
+    await screen.findByText('43.0 kg');
+
+    const fishCategory = screen.getByLabelText('Fish category');
+    const fishSpecies = screen.getByLabelText('Fish species');
+    expect(fishSpecies.tagName).toBe('SELECT');
+    expect(screen.getByRole('option', { name: 'Select fish species' })).toHaveValue('');
+    expect(screen.getByRole('option', { name: 'Pike' })).toHaveValue('pike');
+    expect(screen.getByRole('option', { name: 'Perch' })).toHaveValue('perch');
+    expect(screen.getByRole('option', { name: 'Zander' })).toHaveValue('zander');
+    expect(screen.queryByRole('option', { name: 'Carp' })).not.toBeInTheDocument();
+
+    fireEvent.change(fishSpecies, { target: { value: 'pike' } });
+    expect(fishSpecies).toHaveValue('pike');
+
+    fireEvent.change(fishCategory, { target: { value: 'non-predatory' } });
+    expect(fishSpecies).toHaveValue('');
+    expect(screen.getByRole('option', { name: 'Crucian carp' })).toHaveValue('crucian carp');
+    expect(screen.getByRole('option', { name: 'Carp' })).toHaveValue('carp');
+    expect(screen.getByRole('option', { name: 'Bream' })).toHaveValue('bream');
+    expect(screen.getByRole('option', { name: 'Silver carp' })).toHaveValue('silver carp');
+    expect(screen.queryByRole('option', { name: 'Pike' })).not.toBeInTheDocument();
+  });
+
   it('shows category empty state when filter has no matches', async () => {
     const predatoryOnly = seedRecords.filter((record) => record.fishCategory === 'predatory');
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(mockJsonResponse(predatoryOnly)));
@@ -243,7 +270,7 @@ describe('App - catch records UI', () => {
 
     await screen.findByTestId('catch-record-new-1');
     expect(fetchMock).toHaveBeenCalledWith('/api/catch-records', expect.objectContaining({ method: 'POST' }));
-    expect(screen.getByLabelText('Caught at')).toHaveValue('');
+    expect(screen.getByLabelText('Date')).toHaveValue('');
     expect(screen.getByRole('button', { name: 'Add catch record' })).toBeInTheDocument();
   });
 
@@ -265,7 +292,7 @@ describe('App - catch records UI', () => {
     render(<App />);
     await screen.findByText('43.0 kg');
 
-    fillForm({ caughtAt: '2026-06-23', anglerName: 'A', fishCategory: 'non-predatory', fishSpecies: 'perch', fishCount: '1', totalWeightKg: '1' });
+    fillForm({ caughtAt: '2026-06-23', anglerName: 'A', fishCategory: 'predatory', fishSpecies: 'pike', fishCount: '1', totalWeightKg: '1' });
     fireEvent.click(screen.getByRole('button', { name: 'Add catch record' }));
     expect(await screen.findByText('Fish species does not match the selected category')).toBeInTheDocument();
 
@@ -290,7 +317,7 @@ describe('App - catch records UI', () => {
     await screen.findByText('43.0 kg');
 
     fireEvent.click(screen.getByRole('button', { name: 'Edit pike caught on 2026-04-12, record 10' }));
-    expect(screen.getByLabelText('Caught at')).toHaveValue('2026-04-12');
+    expect(screen.getByLabelText('Date')).toHaveValue('2026-04-12');
     expect(screen.getByLabelText('Angler')).toHaveValue('Oleksii');
     expect(screen.getByRole('button', { name: 'Save changes' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();

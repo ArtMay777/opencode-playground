@@ -75,7 +75,7 @@ function isJsonObject(value: unknown): value is Record<string, unknown> {
 function missingFieldMessage(field: FieldName): string {
   switch (field) {
     case 'caughtAt':
-      return 'Caught at is required';
+      return 'Date is required';
     case 'anglerName':
       return 'Angler is required';
     case 'fishCategory':
@@ -92,15 +92,15 @@ function missingFieldMessage(field: FieldName): string {
 function validateCaughtAt(value: unknown): string {
   if (typeof value !== 'string') {
     if (value === undefined || value === null) {
-      throw new ValidationError('caughtAt', 'Caught at is required');
+      throw new ValidationError('caughtAt', 'Date is required');
     }
-    throw new ValidationError('caughtAt', 'Caught at must be a valid date');
+    throw new ValidationError('caughtAt', 'Date must be a valid date');
   }
   if (value === '') {
-    throw new ValidationError('caughtAt', 'Caught at must be a valid date');
+    throw new ValidationError('caughtAt', 'Date must be a valid date');
   }
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
-    throw new ValidationError('caughtAt', 'Caught at must be a valid date');
+    throw new ValidationError('caughtAt', 'Date must be a valid date');
   }
 
   const [yearString, monthString, dayString] = value.split('-');
@@ -113,13 +113,13 @@ function validateCaughtAt(value: unknown): string {
     date.getUTCMonth() !== month - 1 ||
     date.getUTCDate() !== day
   ) {
-    throw new ValidationError('caughtAt', 'Caught at must be a valid date');
+    throw new ValidationError('caughtAt', 'Date must be a valid date');
   }
 
   const today = new Date();
   const todayUtc = Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate());
   if (date.getTime() > todayUtc) {
-    throw new ValidationError('caughtAt', 'Caught at cannot be in the future');
+    throw new ValidationError('caughtAt', 'Date cannot be in the future');
   }
 
   return value;

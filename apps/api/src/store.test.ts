@@ -9,8 +9,12 @@ const repoStorePath = path.resolve(process.cwd(), '../../data/store.json');
 
 let dataDir: string;
 let originalDataDir: string | undefined;
+let repoStoreExisted: boolean;
+let repoStoreContent: string | undefined;
 
 beforeEach(() => {
+  repoStoreExisted = existsSync(repoStorePath);
+  repoStoreContent = repoStoreExisted ? readFileSync(repoStorePath, 'utf8') : undefined;
   originalDataDir = process.env.DATA_DIR;
   dataDir = mkdtempSync(path.join(tmpdir(), 'angler-store-'));
   process.env.DATA_DIR = dataDir;
@@ -25,6 +29,10 @@ afterEach(() => {
     process.env.DATA_DIR = originalDataDir;
   }
   rmSync(dataDir, { recursive: true, force: true });
+  expect(existsSync(repoStorePath)).toBe(repoStoreExisted);
+  if (repoStoreExisted) {
+    expect(readFileSync(repoStorePath, 'utf8')).toBe(repoStoreContent);
+  }
   vi.restoreAllMocks();
 });
 
@@ -51,7 +59,10 @@ describe('store initialization and seeding', () => {
       Array.from({ length: 10 }, (_, index) => `seed-${index + 1}`),
     );
     expect(store.catchRecords.map((record) => { const { id, ...rest } = record; void id; return rest; })).toEqual(seedRecords);
-    expect(existsSync(repoStorePath)).toBe(false);
+    expect(existsSync(repoStorePath)).toBe(repoStoreExisted);
+    if (repoStoreExisted) {
+      expect(readFileSync(repoStorePath, 'utf8')).toBe(repoStoreContent);
+    }
   });
 
   it('is idempotent when initializing an already missing store', async () => {

@@ -206,7 +206,7 @@ describe('POST /api/catch-records', () => {
       totalWeightKg: 3.4,
     });
     expect(response.status).toBe(400);
-    expect(response.body).toEqual({ field: 'caughtAt', message: 'Caught at is required' });
+    expect(response.body).toEqual({ field: 'caughtAt', message: 'Date is required' });
   });
 
   it('uses exact missing-field messages for category/count/weight', async () => {
@@ -258,12 +258,12 @@ describe('POST /api/catch-records', () => {
     });
 
     expect(response.status).toBe(400);
-    expect(response.body).toEqual({ field: 'caughtAt', message: 'Caught at must be a valid date' });
+    expect(response.body).toEqual({ field: 'caughtAt', message: 'Date must be a valid date' });
   });
 
   it('validates wrong types with exact messages', async () => {
     const cases: Array<[Record<string, unknown>, { field: string; message: string }]> = [
-      [{ ...validInput, caughtAt: 123 }, { field: 'caughtAt', message: 'Caught at must be a valid date' }],
+      [{ ...validInput, caughtAt: 123 }, { field: 'caughtAt', message: 'Date must be a valid date' }],
       [{ ...validInput, anglerName: 123 }, { field: 'anglerName', message: 'Angler must be a string' }],
       [{ ...validInput, fishCategory: 123 }, { field: 'fishCategory', message: 'Fish category must be predatory or non-predatory' }],
       [{ ...validInput, fishSpecies: 123 }, { field: 'fishSpecies', message: 'Fish species must be a string' }],
@@ -283,10 +283,10 @@ describe('POST /api/catch-records', () => {
     vi.setSystemTime(new Date('2026-06-22T12:00:00Z'));
 
     const invalidCalendar = await postCatchRecord({ ...validInput, caughtAt: '2026-02-30' });
-    expect(invalidCalendar.body).toEqual({ field: 'caughtAt', message: 'Caught at must be a valid date' });
+    expect(invalidCalendar.body).toEqual({ field: 'caughtAt', message: 'Date must be a valid date' });
 
     const future = await postCatchRecord({ ...validInput, caughtAt: '2026-06-23' });
-    expect(future.body).toEqual({ field: 'caughtAt', message: 'Caught at cannot be in the future' });
+    expect(future.body).toEqual({ field: 'caughtAt', message: 'Date cannot be in the future' });
 
     const today = await postCatchRecord({ ...validInput, caughtAt: '2026-06-22' });
     expect(today.status).toBe(201);

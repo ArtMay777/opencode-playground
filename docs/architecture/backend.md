@@ -30,7 +30,7 @@
 
   | `field` | `message` values |
   | --- | --- |
-  | `caughtAt` | `Caught at is required`; `Caught at must be a valid date`; `Caught at cannot be in the future` |
+  | `caughtAt` | `Date is required`; `Date must be a valid date`; `Date cannot be in the future` |
   | `anglerName` | `Angler is required`; `Angler must be a string`; `Angler must be 100 characters or fewer` |
   | `fishCategory` | `Fish category must be predatory or non-predatory` |
   | `fishSpecies` | `Fish species is required`; `Fish species must be a string`; `Fish species must be 100 characters or fewer`; `Fish species does not match the selected category` |
