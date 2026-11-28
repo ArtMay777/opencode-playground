@@ -13,6 +13,13 @@ Add a short entry for every significant decision: new endpoints, data model, sto
 
 ## Entries
 
+### 2026-11-26 — User-facing catch date label renamed to Date
+
+- **Context:** The user-facing label `Caught at` was confusing because the form collects only a calendar date. `docs/requirements.md` and `docs/glossary.md` were updated to use `Date` as the visible term while keeping the API/data property name `caughtAt`.
+- **Decision:** Visible UI/table/form wording uses `Date`. The API/data property, request/response field, validation field name, and sort key remain `caughtAt`. The accessible action sentence remains `caught on <date>` because it is sentence wording, not a field label. For the `caughtAt` field, the exact user-facing backend validation messages are `Date is required`, `Date must be a valid date`, and `Date cannot be in the future`. Historical decision entries that mention `Caught at` remain as historical records; where they describe current visible UI labels/columns or the current `caughtAt` validation-message contract, this entry supersedes that wording.
+- **Alternatives:** Rename `caughtAt` to `date` in API/data/contracts (rejected: unnecessary breaking contract change; user requested keeping `caughtAt`); keep `Caught at` in UI/validation messages (rejected: confusing for date-only input).
+- **Consequences:** Frontend labels/headers/tests/E2E selectors must use `Date`. Backend/API contracts and stored field names stay unchanged, but backend validation message text for `caughtAt` must change to the Date wording in a separate implementation step, with matching backend/frontend tests updated.
+
 ### 2026-11-26 — Final accepted review decisions: one sequential E2E scenario, testable rows, missing-field messages, date/weight and body rules, UI labels
 
 - **Context:** A strict review of `docs/architecture/` found remaining gaps that `/implement` would otherwise have to guess: two independent Playwright flows shared one store without flow ordering; duplicate-valued rows were not unambiguously targetable; missing-field error messages were incomplete for three fields; date and weight validation algorithms were underspecified; body-error precedence did not match the starter `express.json()` behavior; and some user-facing button labels were not fixed. The user accepted the following decisions.

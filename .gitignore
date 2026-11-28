@@ -22,6 +22,9 @@ playwright/.cache/
 *.log
 npm-debug.log*
 
+# Local writable application data
+data/store.json
+
 # Editors and operating systems
 .DS_Store
 Thumbs.db

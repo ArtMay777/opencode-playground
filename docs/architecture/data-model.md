@@ -11,7 +11,7 @@ The MVP stores one entity: **Catch record**.
 | Field (glossary / API/UI naming context) | Type | Required | Notes |
 | --- | --- | --- | --- |
 | Catch record ID | string | Yes | Assigned by the API: seed records get `seed-1` through `seed-10` in seed-array order; new records use `crypto.randomUUID()`. Stable for the lifetime of the record; unchanged by edits. |
-| Caught at (`caughtAt`) | string, exact `YYYY-MM-DD` | Yes | Parse numeric year/month/day, construct with `Date.UTC`, require the resulting UTC year/month/day to match the inputs (so `2026-02-30` is invalid); only then reject dates after the server's current UTC calendar date. |
+| Date (`caughtAt`) | string, exact `YYYY-MM-DD` | Yes | Parse numeric year/month/day, construct with `Date.UTC`, require the resulting UTC year/month/day to match the inputs (so `2026-02-30` is invalid); only then reject dates after the server's current UTC calendar date. |
 | Angler (`anglerName`) | string | Yes | 1–100 characters after trimming; must contain at least one non-space character after trimming. |
 | Fish category (`fishCategory`) | string union `'predatory' \| 'non-predatory'` (not a TypeScript `enum`) | Yes | Must be one of these two values. |
 | Fish species (`fishSpecies`) | string | Yes | 1–100 characters after trimming; must contain at least one non-space character after trimming; must belong to the selected Fish category (exhaustive allowed sets come only from `docs/requirements.md` §6; `docs/glossary.md` is terminology/examples only). |
